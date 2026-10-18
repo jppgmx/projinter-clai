@@ -25,15 +25,15 @@ As três propriedades de conexão de `Referencia/Separar/src/main/resources/appl
 
 Em outro ambiente, copie `application-local.properties.example` para `application-local.properties` e preencha as credenciais. `SERVER_PORT` altera a porta, cujo padrão é 4040.
 
-O cadastro utiliza somente as tabelas existentes `estudante` e `curso`. Por padrão, Hibernate apenas valida os mapeamentos; não cria nem altera tabelas. `SPRING_JPA_HIBERNATE_DDL_AUTO` permite configurar esse comportamento, conforme a infraestrutura atualizada. No Supabase já preparado, mantenha `validate`: nenhum SQL adicional é necessário. Deve existir pelo menos um curso no banco para preencher o formulário.
+O cadastro utiliza somente as tabelas existentes `estudante` e `curso`. Por padrão, Hibernate apenas valida os mapeamentos; não cria nem altera tabelas. No Supabase já preparado, mantenha `validate`: nenhum SQL adicional é necessário. Deve existir pelo menos um curso no banco para preencher o formulário.
 
 ## Estrutura e Docker
 
-Os arquivos de Docker Compose, Dockerfile, Nginx, `.env.example` e regras de Git da nova estrutura foram incorporados à raiz deste projeto. As entidades, validações e endpoints de cadastro foram preservados.
+As configurações foram separadas em `application-dev.properties` e `application-prod.properties`, mantendo `application.properties` com valores comuns. O perfil padrão é `dev`.
 
-Ao executar diretamente, a porta padrão continua 4040. Nos dois Compose, `SERVER_PORT=8080` mantém o backend compatível com o Nginx fornecido. O ambiente de desenvolvimento monta também `apps/frontend`; o build de produção inclui essa pasta no contexto para empacotar o HTML e o JavaScript no JAR. Não há CSS.
+Ao executar diretamente, a porta padrão continua 4040. Os Compose definem `dev` ou `prod`, usam arquivos `.env` separados e executam backend e Nginx. A conexão permanece no Supabase existente: não há serviço PostgreSQL local, script de inicialização nem banco criado pelo Compose. Em desenvolvimento a configuração privada é importada; produção recebe as credenciais pelo ambiente. Essa escolha de banco externo diverge da exigência do professor de um banco no Compose, conforme documentado no README.
 
-Os Compose usam seu próprio PostgreSQL local com as variáveis `POSTGRES_DB`, `POSTGRES_USER` e `POSTGRES_PASSWORD` do `.env`. As variáveis `SPRING_DATASOURCE_*` do container substituem a configuração local do Supabase. Um volume de banco novo precisa receber o schema antes de iniciar com `validate`. As instruções de execução estão no README da raiz.
+O frontend é incluído no JAR pelo Maven. Não há CSS. O cadastro e as consultas mantêm seus contratos HTTP. O controller consulta cursos por `CursoService`, seguindo a arquitetura em camadas.
 
 O SQL e a referência usam `turma` e `data_nascimento_idade` (texto, até 60 caracteres). Esses nomes prevalecem sobre os nomes diferentes apresentados no HTML de entidades. O formulário preserva esse formato e não acrescenta colunas.
 
@@ -64,7 +64,15 @@ Use um `idCurso` existente. Os campos após `dataNascimentoIdade` são opcionais
 
 Respostas: `201` com o estudante criado, `400` para dados inválidos ou curso inexistente, `409` para matrícula duplicada/conflito de integridade. Erros de validação retornam `erro` e um mapa `campos`. A matrícula é chave primária e o cadastro sempre usa INSERT, impedindo a atualização de um estudante existente, inclusive em requisições concorrentes.
 
-O tratamento de erros é restrito ao controller deste cadastro. Não há autenticação, edição, exclusão, consulta de estudantes, estudos de caso ou laudos.
+O tratamento de erros é restrito aos controllers de cadastro e consulta de estudantes. Não há autenticação, edição, exclusão, abertura/alteração de estudos de caso ou laudos.
+
+## Consulta de estudantes — T07
+
+A T07 acrescenta `GET /api/estudantes` (busca opcional por nome/matrícula em `?busca=`) e `GET /api/estudantes/{matricula}` (dados cadastrais e histórico em `estudosDeCaso`). Acesse `/estudantes.html` e selecione **Ver dados e histórico**. As páginas são HTML sem CSS.
+
+Os DTOs retornam os dados dentro da transação de leitura, sem depender da serialização de relações JPA lazy. O histórico usa uma consulta parametrizada às colunas existentes de `estudo_de_caso`, sem introduzir uma entidade de escrita ou executar migrações. Inclui todos os estudos vinculados à matrícula, inclusive arquivados, ordenados pelo identificador decrescente. Um estudante sem estudos retorna lista vazia; matrícula inexistente retorna 404.
+
+As classes antes reunidas em `estudante` agora estão separadas em `controller`, `dto`, `entidade`, `exception`, `repositorio` e `servico`. O contrato do cadastro foi preservado. Depois de atualizar, reconstrua o projeto na IDE para eliminar classes compiladas dos pacotes antigos.
 
 ## Verificação pelo desenvolvedor
 
@@ -74,4 +82,4 @@ A compilação do backend passou com Java 21. Os testes ficaram para execução 
 .\mvnw.cmd test
 ```
 
-Os testes usam o perfil `test` e um banco H2 em memória separado por contexto, com apenas as tabelas do cadastro; não utilizam o Supabase.
+O H2 foi removido. Os testes de integração só são habilitados ao definir `CLAI_TEST_DATABASE_URL` explicitamente para um PostgreSQL de teste já existente chamado `clai_test`, com usuário e senha exclusivos. Não usam a conexão do Supabase da aplicação. Sem essa configuração, são ignorados. Nenhum teste foi executado nesta adequação. Consulte o README para detalhes.
