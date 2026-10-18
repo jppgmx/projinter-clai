@@ -1,9 +1,10 @@
 FROM maven:3.9-eclipse-temurin-21 AS build
 
-WORKDIR /workspace
+WORKDIR /workspace/backend
 
-COPY pom.xml .
-COPY src src
+COPY backend/pom.xml .
+COPY backend/src src
+COPY frontend /workspace/frontend
 
 RUN mvn -B -DskipTests package \
 	&& find target -maxdepth 1 -type f -name '*.jar' \
@@ -16,7 +17,7 @@ WORKDIR /app
 
 RUN useradd --system --create-home --uid 10001 appuser
 
-COPY --from=build /workspace/target/app.jar app.jar
+COPY --from=build /workspace/backend/target/app.jar app.jar
 
 RUN chown appuser:appuser app.jar
 

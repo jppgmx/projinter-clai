@@ -19,12 +19,14 @@ services:
     image: maven:3.9-eclipse-temurin-21
     working_dir: /workspace
     environment:
+      SERVER_PORT: 8080
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-clai}
       SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-clai}
       SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-clai_dev}
       SPRING_JPA_HIBERNATE_DDL_AUTO: ${SPRING_JPA_HIBERNATE_DDL_AUTO:-update}
     volumes:
       - ./apps/backend:/workspace
+      - ./apps/frontend:/frontend:ro
       - ./docker-data/maven-cache:/root/.m2
     command: ["sh", "mvnw", "spring-boot:run"]
     ports:
