@@ -71,26 +71,11 @@
 
     <build>
         <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-            </resource>
-            <resource>
-                <directory>../frontend</directory>
-                <targetPath>static</targetPath>
-                <includes>
-                    <include>cadastro-estudante.html</include>
-                    <include>cadastro-estudante.js</include>
-                    <include>estudantes.html</include>
-                    <include>estudantes.js</include>
-                    <include>detalhes-estudante.html</include>
-                    <include>detalhes-estudante.js</include>
-                    <include>abertura-estudo-caso.html</include>
-                    <include>abertura-estudo-caso.js</include>
-                    <include>editar-estudo-caso.html</include>
-                    <include>editar-estudo-caso.js</include>
-                    <include>listar-estudos-caso.js</include>
-                </includes>
-            </resource>
+            <resource><directory>src/main/resources</directory></resource>
+            <resource><directory>../frontend/html</directory><targetPath>static</targetPath></resource>
+            <resource><directory>../frontend/js</directory><targetPath>static/js</targetPath><includes><include>*.js</include></includes></resource>
+            <resource><directory>../frontend/css</directory><targetPath>static/css</targetPath></resource>
+            <resource><directory>../frontend/dist</directory><targetPath>static</targetPath></resource>
         </resources>
         <plugins>
             <plugin>

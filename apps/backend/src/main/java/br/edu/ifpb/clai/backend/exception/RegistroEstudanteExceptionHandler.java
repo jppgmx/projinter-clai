@@ -1,6 +1,7 @@
 package br.edu.ifpb.clai.backend.exception;
 
 import br.edu.ifpb.clai.backend.controller.EstudanteController;
+import br.edu.ifpb.clai.backend.controller.EdicaoEstudanteController;
 import br.edu.ifpb.clai.backend.controller.ConsultaEstudanteController;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 // Escopo restrito ao cadastro e à consulta de estudantes; não substitui a tarefa T04.
-@RestControllerAdvice(assignableTypes = {EstudanteController.class, ConsultaEstudanteController.class})
+@RestControllerAdvice(assignableTypes = {EstudanteController.class, ConsultaEstudanteController.class, EdicaoEstudanteController.class})
 public class RegistroEstudanteExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> validar(MethodArgumentNotValidException ex) {
@@ -36,6 +37,11 @@ public class RegistroEstudanteExceptionHandler {
     @ExceptionHandler(EstudanteNaoEncontradoException.class)
     public ResponseEntity<?> estudanteNaoEncontrado(EstudanteNaoEncontradoException ex) {
         return ResponseEntity.status(404).body(Map.of("erro", ex.getMessage()));
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<?> invalido(IllegalArgumentException ex) {
+        return ResponseEntity.badRequest().body(Map.of("erro", ex.getMessage()));
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)

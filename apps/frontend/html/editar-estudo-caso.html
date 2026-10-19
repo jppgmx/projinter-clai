@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Editar estudo de caso | CLAI</title>
+    <script src="/js/editar-estudo-caso.js" type="module" defer></script>
+    <script src="/js/listar-estudos-caso.js" type="module" defer></script>
+
+
+<link rel="stylesheet" href="/css/page-styles.css">
+<script type="module" src="/js/page-layout.js"></script>
+</head>
+<body data-ui-page="estudos">
+<main>
+    <p><a href="estudantes.html">Consultar estudantes e histórico</a></p>
+    <h1>Estudos de caso</h1>
+    <section aria-labelledby="titulo-listagem">
+        <h2 id="titulo-listagem">Consultar estudos de caso</h2>
+        <form id="filtro-estudos">
+            <label for="matricula-filtro">Matrícula completa do estudante</label>
+            <input id="matricula-filtro" type="text" name="matricula">
+            <button type="submit">Filtrar</button>
+            <button id="todos-estudos" type="button">Mostrar todos</button>
+        </form>
+        <p id="mensagem-listagem" role="status" aria-live="polite"></p>
+        <table id="lista-estudos" hidden>
+            <caption>Estudos de caso cadastrados</caption>
+            <thead><tr><th scope="col">Número</th><th scope="col">Matrícula</th>
+                <th scope="col">Estudante</th><th scope="col">Período letivo</th>
+                <th scope="col">Situação</th><th scope="col">Ação</th></tr></thead>
+            <tbody id="linhas-estudos"></tbody>
+        </table>
+    </section>
+    <h2>Editar estudo de caso</h2>
+    <form id="consulta-estudo">
+        <label for="id-estudo">Número do estudo de caso</label>
+        <input id="id-estudo" type="number" min="1" step="1" required>
+        <button id="carregar" type="submit">Carregar estudo</button>
+    </form>
+    <p id="mensagem" role="status" aria-live="polite" tabindex="-1">Selecione um estudo na lista ou informe seu número para carregar os dados.</p>
+    <section id="identificacao" hidden>
+        <h2 id="titulo-estudo"></h2>
+        <p id="estudante"></p>
+        <p id="situacao"></p>
+    </section>
+    <form id="edicao" hidden>
+        <p>Campos com * são obrigatórios.</p>
+        <fieldset id="campos-edicao" disabled>
+            <legend>Dados do estudo de caso</legend>
+            <section><h2>Seção 1 — Dados do atendimento</h2>
+                <p><label for="idProfissionalResponsavel">Profissional responsável *</label><br>
+                    <select id="idProfissionalResponsavel" aria-describedby="erro-idProfissionalResponsavel" required><option value="">Selecione</option></select>
+                    <small id="erro-idProfissionalResponsavel"></small>
+                </p>
+                <p><label for="periodoLetivo">Período letivo *</label><br>
+                    <input type="text" id="periodoLetivo" aria-describedby="erro-periodoLetivo" required maxlength="20">
+                    <small id="erro-periodoLetivo"></small>
+                </p>
+                <p><label for="datasAtendimentoAnamnese">Datas de atendimento / anamnese *</label><br>
+                    <textarea id="datasAtendimentoAnamnese" aria-describedby="erro-datasAtendimentoAnamnese" required rows="3"></textarea>
+                    <small id="erro-datasAtendimentoAnamnese"></small>
+                </p>
+            </section>
+            <section><h2>Seção 2 — Motivo do encaminhamento e demanda inicial</h2>
+                <p><label for="origemEncaminhamento">Origem do encaminhamento *</label><br>
+                    <select id="origemEncaminhamento" aria-describedby="erro-origemEncaminhamento" required><option value="">Selecione</option><option value="CLAI">CLAI</option><option value="COPED">COPED</option><option value="CAEST">CAEST</option><option value="Coordenação de Curso">Coordenação de Curso</option><option value="Docente">Docente</option><option value="Família">Família</option><option value="Estudante">Estudante</option><option value="Outro">Outro</option></select>
+                    <small id="erro-origemEncaminhamento"></small>
+                </p>
+                <p id="campo-outra-origem" hidden><label for="origemEncaminhamentoOutro">Especifique a origem</label><br>
+                    <input type="text" id="origemEncaminhamentoOutro" aria-describedby="erro-origemEncaminhamentoOutro" maxlength="150">
+                    <small id="erro-origemEncaminhamentoOutro"></small>
+                </p>
+                <p><label for="motivoPrincipal">Motivo principal do encaminhamento *</label><br>
+                    <textarea id="motivoPrincipal" aria-describedby="erro-motivoPrincipal" required rows="3"></textarea>
+                    <small id="erro-motivoPrincipal"></small>
+                </p>
+                <p><label for="demandaEstudante">Demanda do(a) estudante</label><br>
+                    <textarea id="demandaEstudante" aria-describedby="erro-demandaEstudante" rows="3"></textarea>
+                    <small id="erro-demandaEstudante"></small>
+                </p>
+                <p><label for="demandaFamiliaResponsavel">Demanda da família / responsável</label><br>
+                    <textarea id="demandaFamiliaResponsavel" aria-describedby="erro-demandaFamiliaResponsavel" rows="3"></textarea>
+                    <small id="erro-demandaFamiliaResponsavel"></small>
+                </p>
+                <p><label for="demandaEquipeEscolar">Demanda da equipe escolar</label><br>
+                    <textarea id="demandaEquipeEscolar" aria-describedby="erro-demandaEquipeEscolar" rows="3"></textarea>
+                    <small id="erro-demandaEquipeEscolar"></small>
+                </p>
+            </section>
+            <section><h2>Seção 3 — Necessidade específica e documentação</h2>
+                <p><label for="deficienciaNecessidadeInformada">Deficiência / necessidade informada *</label><br>
+                    <textarea id="deficienciaNecessidadeInformada" aria-describedby="erro-deficienciaNecessidadeInformada" required rows="3"></textarea>
+                    <small id="erro-deficienciaNecessidadeInformada"></small>
+                </p>
+                <p><label for="diagnosticos">Diagnósticos</label><br>
+                    <textarea id="diagnosticos" aria-describedby="erro-diagnosticos" rows="3"></textarea>
+                    <small id="erro-diagnosticos"></small>
+                </p>
+                <p><label for="docsComprobatoriosFlagQuais">Documentos comprobatórios *</label><br>
+                    <textarea id="docsComprobatoriosFlagQuais" aria-describedby="erro-docsComprobatoriosFlagQuais" required rows="3"></textarea>
+                    <small>Se informar Sim, descreva quais.</small>
+                    <small id="erro-docsComprobatoriosFlagQuais"></small>
+                </p>
+                <p><label for="dataProfissionalDocs">Data e profissional dos documentos</label><br>
+                    <textarea id="dataProfissionalDocs" aria-describedby="erro-dataProfissionalDocs" rows="3"></textarea>
+                    <small id="erro-dataProfissionalDocs"></small>
+                </p>
+                <p><label for="condicaoAssociadaFlagQuais">Condição associada *</label><br>
+                    <textarea id="condicaoAssociadaFlagQuais" aria-describedby="erro-condicaoAssociadaFlagQuais" required rows="3"></textarea>
+                    <small>Se informar Sim, descreva quais.</small>
+                    <small id="erro-condicaoAssociadaFlagQuais"></small>
+                </p>
+                <p><label for="medicacaoContinuaFlagQuais">Medicação contínua *</label><br>
+                    <textarea id="medicacaoContinuaFlagQuais" aria-describedby="erro-medicacaoContinuaFlagQuais" required rows="3"></textarea>
+                    <small>Se informar Sim, descreva quais.</small>
+                    <small id="erro-medicacaoContinuaFlagQuais"></small>
+                </p>
+                <p><label for="encaminhamentosAnteriores">Encaminhamentos anteriores</label><br>
+                    <textarea id="encaminhamentosAnteriores" aria-describedby="erro-encaminhamentosAnteriores" rows="3"></textarea>
+                    <small id="erro-encaminhamentosAnteriores"></small>
+                </p>
+                <p><label for="servicosApoioAtuaisAnteriores">Serviços de apoio atuais e anteriores</label><br>
+                    <textarea id="servicosApoioAtuaisAnteriores" aria-describedby="erro-servicosApoioAtuaisAnteriores" rows="3"></textarea>
+                    <small id="erro-servicosApoioAtuaisAnteriores"></small>
+                </p>
+            </section>
+            <section><h2>Seção 4 — Anamnese: histórico de desenvolvimento e vida escolar</h2>
+                <p><label for="historicoEscolar">Histórico escolar</label><br>
+                    <textarea id="historicoEscolar" aria-describedby="erro-historicoEscolar" rows="3"></textarea>
+                    <small id="erro-historicoEscolar"></small>
+                </p>
+                <p><label for="experienciasEscolaresPositivas">Experiências escolares positivas</label><br>
+                    <textarea id="experienciasEscolaresPositivas" aria-describedby="erro-experienciasEscolaresPositivas" rows="3"></textarea>
+                    <small id="erro-experienciasEscolaresPositivas"></small>
+                </p>
+                <p><label for="experienciasNegativasBarreiras">Experiências negativas e barreiras</label><br>
+                    <textarea id="experienciasNegativasBarreiras" aria-describedby="erro-experienciasNegativasBarreiras" rows="3"></textarea>
+                    <small id="erro-experienciasNegativasBarreiras"></small>
+                </p>
+                <p><label for="adaptacoesRecursosUtilizadosResultados">Adaptações e recursos utilizados (e resultados)</label><br>
+                    <textarea id="adaptacoesRecursosUtilizadosResultados" aria-describedby="erro-adaptacoesRecursosUtilizadosResultados" rows="3"></textarea>
+                    <small id="erro-adaptacoesRecursosUtilizadosResultados"></small>
+                </p>
+                <p><label for="objetivosConhecimentosConsolidados">Objetivos e conhecimentos consolidados</label><br>
+                    <textarea id="objetivosConhecimentosConsolidados" aria-describedby="erro-objetivosConhecimentosConsolidados" rows="3"></textarea>
+                    <small id="erro-objetivosConhecimentosConsolidados"></small>
+                </p>
+                <p><label for="areasDisciplinasMaiorFacilidade">Áreas / disciplinas de maior facilidade</label><br>
+                    <textarea id="areasDisciplinasMaiorFacilidade" aria-describedby="erro-areasDisciplinasMaiorFacilidade" rows="3"></textarea>
+                    <small id="erro-areasDisciplinasMaiorFacilidade"></small>
+                </p>
+                <p><label for="areasDisciplinasMaiorDificuldade">Áreas / disciplinas de maior dificuldade</label><br>
+                    <textarea id="areasDisciplinasMaiorDificuldade" aria-describedby="erro-areasDisciplinasMaiorDificuldade" rows="3"></textarea>
+                    <small id="erro-areasDisciplinasMaiorDificuldade"></small>
+                </p>
+            </section>
+            <section><h2>Seção 5 — Perfil de aprendizagem, comunicação, participação e autonomia</h2>
+                <p><label for="comunicacaoCompreensaoOrientacoes">Comunicação e compreensão de orientações</label><br>
+                    <textarea id="comunicacaoCompreensaoOrientacoes" aria-describedby="erro-comunicacaoCompreensaoOrientacoes" rows="3"></textarea>
+                    <small id="erro-comunicacaoCompreensaoOrientacoes"></small>
+                </p>
+                <p><label for="leituraEscritaLinguagem">Leitura, escrita e linguagem</label><br>
+                    <textarea id="leituraEscritaLinguagem" aria-describedby="erro-leituraEscritaLinguagem" rows="3"></textarea>
+                    <small id="erro-leituraEscritaLinguagem"></small>
+                </p>
+                <p><label for="raciocinioLogicoMatematico">Raciocínio lógico-matemático</label><br>
+                    <textarea id="raciocinioLogicoMatematico" aria-describedby="erro-raciocinioLogicoMatematico" rows="3"></textarea>
+                    <small id="erro-raciocinioLogicoMatematico"></small>
+                </p>
+                <p><label for="atencaoMemoriaFuncoesExecutivas">Atenção, memória e funções executivas</label><br>
+                    <textarea id="atencaoMemoriaFuncoesExecutivas" aria-describedby="erro-atencaoMemoriaFuncoesExecutivas" rows="3"></textarea>
+                    <small id="erro-atencaoMemoriaFuncoesExecutivas"></small>
+                </p>
+                <p><label for="organizacaoPlanejamentoTarefas">Organização e planejamento de tarefas</label><br>
+                    <textarea id="organizacaoPlanejamentoTarefas" aria-describedby="erro-organizacaoPlanejamentoTarefas" rows="3"></textarea>
+                    <small id="erro-organizacaoPlanejamentoTarefas"></small>
+                </p>
+                <p><label for="interacaoSocialParticipacaoSala">Interação social e participação em sala</label><br>
+                    <textarea id="interacaoSocialParticipacaoSala" aria-describedby="erro-interacaoSocialParticipacaoSala" rows="3"></textarea>
+                    <small id="erro-interacaoSocialParticipacaoSala"></small>
+                </p>
+                <p><label for="aspectosSensoriaisRelevantes">Aspectos sensoriais relevantes</label><br>
+                    <textarea id="aspectosSensoriaisRelevantes" aria-describedby="erro-aspectosSensoriaisRelevantes" rows="3"></textarea>
+                    <small id="erro-aspectosSensoriaisRelevantes"></small>
+                </p>
+                <p><label for="mobilidadeAcessoFisicoTecnologias">Mobilidade, acesso físico e tecnologias</label><br>
+                    <textarea id="mobilidadeAcessoFisicoTecnologias" aria-describedby="erro-mobilidadeAcessoFisicoTecnologias" rows="3"></textarea>
+                    <small id="erro-mobilidadeAcessoFisicoTecnologias"></small>
+                </p>
+                <p><label for="autonomiaContextoFamiliar">Autonomia no contexto familiar</label><br>
+                    <textarea id="autonomiaContextoFamiliar" aria-describedby="erro-autonomiaContextoFamiliar" rows="3"></textarea>
+                    <small id="erro-autonomiaContextoFamiliar"></small>
+                </p>
+                <p><label for="autonomiaContextoEscolar">Autonomia no contexto escolar</label><br>
+                    <textarea id="autonomiaContextoEscolar" aria-describedby="erro-autonomiaContextoEscolar" rows="3"></textarea>
+                    <small id="erro-autonomiaContextoEscolar"></small>
+                </p>
+                <p><label for="estrategiasFavorecemAprendizagem">Estratégias que favorecem a aprendizagem</label><br>
+                    <textarea id="estrategiasFavorecemAprendizagem" aria-describedby="erro-estrategiasFavorecemAprendizagem" rows="3"></textarea>
+                    <small id="erro-estrategiasFavorecemAprendizagem"></small>
+                </p>
+                <p><label for="situacoesDificultamDesorganizamAprendizagem">Situações que dificultam / desorganizam a aprendizagem</label><br>
+                    <textarea id="situacoesDificultamDesorganizamAprendizagem" aria-describedby="erro-situacoesDificultamDesorganizamAprendizagem" rows="3"></textarea>
+                    <small id="erro-situacoesDificultamDesorganizamAprendizagem"></small>
+                </p>
+            </section>
+            <section><h2>Seção 6 — Contexto psicossocial e pertencimento ao curso</h2>
+                <p><label for="relacaoCursoExpectativas">Relação com o curso e expectativas</label><br>
+                    <textarea id="relacaoCursoExpectativas" aria-describedby="erro-relacaoCursoExpectativas" rows="3"></textarea>
+                    <small id="erro-relacaoCursoExpectativas"></small>
+                </p>
+                <p><label for="redeApoioFamiliarSocial">Rede de apoio familiar e social</label><br>
+                    <textarea id="redeApoioFamiliarSocial" aria-describedby="erro-redeApoioFamiliarSocial" rows="3"></textarea>
+                    <small id="erro-redeApoioFamiliarSocial"></small>
+                </p>
+                <p><label for="conflitosFatoresPsicossociais">Conflitos e fatores psicossociais</label><br>
+                    <textarea id="conflitosFatoresPsicossociais" aria-describedby="erro-conflitosFatoresPsicossociais" rows="3"></textarea>
+                    <small id="erro-conflitosFatoresPsicossociais"></small>
+                </p>
+                <p><label for="observacoesFrequenciaRotinaPermanencia">Observações sobre frequência, rotina e permanência</label><br>
+                    <textarea id="observacoesFrequenciaRotinaPermanencia" aria-describedby="erro-observacoesFrequenciaRotinaPermanencia" rows="3"></textarea>
+                    <small id="erro-observacoesFrequenciaRotinaPermanencia"></small>
+                </p>
+            </section>
+            <section><h2>Seção 7 — Potencialidades, interesses e recursos do(a) estudante</h2>
+                <p><label for="potencialidadesAcademicas">Potencialidades acadêmicas</label><br>
+                    <textarea id="potencialidadesAcademicas" aria-describedby="erro-potencialidadesAcademicas" rows="3"></textarea>
+                    <small id="erro-potencialidadesAcademicas"></small>
+                </p>
+                <p><label for="interessesHabilidades">Interesses e habilidades</label><br>
+                    <textarea id="interessesHabilidades" aria-describedby="erro-interessesHabilidades" rows="3"></textarea>
+                    <small id="erro-interessesHabilidades"></small>
+                </p>
+                <p><label for="formasPreferenciaisAprender">Formas preferenciais de aprender</label><br>
+                    <textarea id="formasPreferenciaisAprender" aria-describedby="erro-formasPreferenciaisAprender" rows="3"></textarea>
+                    <small id="erro-formasPreferenciaisAprender"></small>
+                </p>
+                <p><label for="recursosPessoaisTecnologicos">Recursos pessoais e tecnológicos</label><br>
+                    <textarea id="recursosPessoaisTecnologicos" aria-describedby="erro-recursosPessoaisTecnologicos" rows="3"></textarea>
+                    <small id="erro-recursosPessoaisTecnologicos"></small>
+                </p>
+            </section>
+            <section><h2>Seção 9 — Síntese psicopedagógica</h2>
+                <p><label for="sinteseAIdentificacaoNecessidades">A) Identificação de necessidades</label><br>
+                    <textarea id="sinteseAIdentificacaoNecessidades" aria-describedby="erro-sinteseAIdentificacaoNecessidades" rows="3"></textarea>
+                    <small id="erro-sinteseAIdentificacaoNecessidades"></small>
+                </p>
+                <p><label for="sinteseBAvancosObjetivosAlcancados">B) Avanços e objetivos alcançados</label><br>
+                    <textarea id="sinteseBAvancosObjetivosAlcancados" aria-describedby="erro-sinteseBAvancosObjetivosAlcancados" rows="3"></textarea>
+                    <small id="erro-sinteseBAvancosObjetivosAlcancados"></small>
+                </p>
+                <p><label for="sinteseCDificuldadesBarreirasEducacionais">C) Dificuldades e barreiras educacionais</label><br>
+                    <textarea id="sinteseCDificuldadesBarreirasEducacionais" aria-describedby="erro-sinteseCDificuldadesBarreirasEducacionais" rows="3"></textarea>
+                    <small id="erro-sinteseCDificuldadesBarreirasEducacionais"></small>
+                </p>
+                <p><label for="sinteseDPotencialidadesCondicoesFacilitadoras">D) Potencialidades e condições facilitadoras</label><br>
+                    <textarea id="sinteseDPotencialidadesCondicoesFacilitadoras" aria-describedby="erro-sinteseDPotencialidadesCondicoesFacilitadoras" rows="3"></textarea>
+                    <small id="erro-sinteseDPotencialidadesCondicoesFacilitadoras"></small>
+                </p>
+                <p><label for="sinteseEPrincipaisDemandasIdentificadas">E) Principais demandas identificadas</label><br>
+                    <textarea id="sinteseEPrincipaisDemandasIdentificadas" aria-describedby="erro-sinteseEPrincipaisDemandasIdentificadas" rows="3"></textarea>
+                    <small id="erro-sinteseEPrincipaisDemandasIdentificadas"></small>
+                </p>
+            </section>
+            <section><h2>Seção 10 — Checklist de apoios/adaptações e assinaturas</h2>
+                <p><label for="checklistAcessibilidadeAmbiente">Checklist: acessibilidade e ambiente</label><br>
+                    <textarea id="checklistAcessibilidadeAmbiente" aria-describedby="erro-checklistAcessibilidadeAmbiente" rows="3"></textarea>
+                    <small id="erro-checklistAcessibilidadeAmbiente"></small>
+                </p>
+                <p><label for="checklistComunicacaoMateriais">Checklist: comunicação e materiais</label><br>
+                    <textarea id="checklistComunicacaoMateriais" aria-describedby="erro-checklistComunicacaoMateriais" rows="3"></textarea>
+                    <small id="erro-checklistComunicacaoMateriais"></small>
+                </p>
+                <p><label for="checklistMetodologia">Checklist: metodologia</label><br>
+                    <textarea id="checklistMetodologia" aria-describedby="erro-checklistMetodologia" rows="3"></textarea>
+                    <small id="erro-checklistMetodologia"></small>
+                </p>
+                <p><label for="checklistAvaliacao">Checklist: avaliação</label><br>
+                    <textarea id="checklistAvaliacao" aria-describedby="erro-checklistAvaliacao" rows="3"></textarea>
+                    <small id="erro-checklistAvaliacao"></small>
+                </p>
+                <p><label for="checklistCurriculo">Checklist: currículo</label><br>
+                    <textarea id="checklistCurriculo" aria-describedby="erro-checklistCurriculo" rows="3"></textarea>
+                    <small id="erro-checklistCurriculo"></small>
+                </p>
+                <p><label for="checklistApoiosInstitucionais">Checklist: apoios institucionais</label><br>
+                    <textarea id="checklistApoiosInstitucionais" aria-describedby="erro-checklistApoiosInstitucionais" rows="3"></textarea>
+                    <small id="erro-checklistApoiosInstitucionais"></small>
+                </p>
+                <p><label for="apoiosExternosEncaminhamentos">Apoios externos e encaminhamentos</label><br>
+                    <textarea id="apoiosExternosEncaminhamentos" aria-describedby="erro-apoiosExternosEncaminhamentos" rows="3"></textarea>
+                    <small id="erro-apoiosExternosEncaminhamentos"></small>
+                </p>
+                <p><label for="idPsicopedagogoAssinatura">Psicopedagogo(a) responsável pela assinatura</label><br>
+                    <select id="idPsicopedagogoAssinatura" aria-describedby="erro-idPsicopedagogoAssinatura"><option value="">Não informado</option></select>
+                    <small id="erro-idPsicopedagogoAssinatura"></small>
+                </p>
+                <p><label for="assinaturaPsicopedagogo">Assinatura do(a) psicopedagogo(a)</label><br>
+                    <textarea id="assinaturaPsicopedagogo" aria-describedby="erro-assinaturaPsicopedagogo" rows="3"></textarea>
+                    <small id="erro-assinaturaPsicopedagogo"></small>
+                </p>
+                <p><label for="idCoordenadorClaiAssinatura">Coordenador(a) da CLAI responsável pela assinatura</label><br>
+                    <select id="idCoordenadorClaiAssinatura" aria-describedby="erro-idCoordenadorClaiAssinatura"><option value="">Não informado</option></select>
+                    <small id="erro-idCoordenadorClaiAssinatura"></small>
+                </p>
+                <p><label for="assinaturaCoordenadorClai">Assinatura do(a) coordenador(a) da CLAI</label><br>
+                    <textarea id="assinaturaCoordenadorClai" aria-describedby="erro-assinaturaCoordenadorClai" rows="3"></textarea>
+                    <small id="erro-assinaturaCoordenadorClai"></small>
+                </p>
+            </section>
+        </fieldset>
+        <p><button id="salvar" type="submit" disabled>Salvar alterações</button></p>
+    </form>
+    <noscript>Ative o JavaScript para editar o estudo de caso.</noscript>
+</main>
+</body>
+</html>

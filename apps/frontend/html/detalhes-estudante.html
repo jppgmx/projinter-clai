@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dados do estudante | CLAI</title>
+    <script src="/js/detalhes-estudante.js" type="module" defer></script>
+
+
+<link rel="stylesheet" href="/css/page-styles.css">
+<script type="module" src="/js/page-layout.js"></script>
+</head>
+<body data-ui-page="detalhes">
+<main>
+    <p><a href="estudantes.html">Voltar à consulta de estudantes</a></p>
+    <h1>Dados do estudante</h1>
+    <p><a id="editar-cadastro">Editar cadastro do estudante</a></p>
+    <p id="mensagem" role="status" aria-live="polite">Carregando dados…</p>
+    <button id="tentar-novamente" type="button" hidden>Tentar novamente</button>
+    <section id="cadastro" aria-labelledby="titulo-cadastro" hidden>
+        <h2 id="titulo-cadastro">Dados cadastrais</h2>
+        <dl id="dados-cadastrais"></dl>
+    </section>
+    <section id="historico" aria-labelledby="titulo-historico" hidden>
+        <h2 id="titulo-historico">Histórico de estudos de caso</h2>
+        <p id="sem-estudos" hidden>Nenhum estudo de caso registrado para este estudante.</p>
+        <div id="estudos"></div>
+    </section>
+    <noscript>Ative o JavaScript para visualizar os dados do estudante.</noscript>
+</main>
+</body>
+</html>
