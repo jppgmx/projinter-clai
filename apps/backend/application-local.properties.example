@@ -1,0 +1,4 @@
+# Copie para application-local.properties e preencha os dados da referência.
+spring.datasource.url=${SPRING_DATASOURCE_URL:jdbc:postgresql://aws-0-us-east-1.pooler.supabase.com:5432/postgres?sslmode=require}
+spring.datasource.username=${SPRING_DATASOURCE_USERNAME:SEU_USUARIO}
+spring.datasource.password=${SPRING_DATASOURCE_PASSWORD:SUA_SENHA}

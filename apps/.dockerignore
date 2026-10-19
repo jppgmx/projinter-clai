@@ -1,0 +1,10 @@
+**/target
+**/node_modules
+**/dist
+**/.idea
+**/.git
+**/*.iml
+**/*.log
+**/application-local.properties
+**/.env
+**/.env.*

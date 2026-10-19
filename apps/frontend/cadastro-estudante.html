@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="pt-BR">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Registrar estudante | CLAI</title>
+<script src="cadastro-estudante.js" defer></script></head>
+<body><header><strong>CLAI</strong> <span>Coordenação Local de Acessibilidade e Inclusão</span></header>
+<main><p>REGISTRO DE ESTUDANTES</p><h1>Registrar estudante</h1>
+<p>Preencha os dados cadastrais do estudante. Campos com * são obrigatórios.</p>
+<div id="mensagem" role="status" aria-live="polite" tabindex="-1" hidden></div>
+<form id="cadastro"><fieldset><legend>Dados acadêmicos e pessoais</legend><div>
+<div><label for="matricula">Matrícula *</label>
+<input id="matricula" name="matricula" type="text" maxlength="30" required aria-describedby="erro-matricula">
+<small id="erro-matricula"></small></div>
+<div><label for="nomeEstudante">Nome completo *</label>
+<input id="nomeEstudante" name="nomeEstudante" type="text" maxlength="150" required aria-describedby="erro-nomeEstudante">
+<small id="erro-nomeEstudante"></small></div><div><label for="curso">Curso *</label>
+<select id="curso" name="curso" required aria-describedby="erro-curso" disabled><option value="">Carregando cursos…</option></select>
+<small id="erro-curso"></small><button type="button" id="recarregar" hidden>Tentar carregar cursos novamente</button></div><div><label for="turma">Turma *</label>
+<input id="turma" name="turma" type="text" maxlength="50" required aria-describedby="erro-turma">
+<small id="erro-turma"></small></div>
+<div><label for="periodoIngresso">Período de ingresso *</label>
+<input id="periodoIngresso" name="periodoIngresso" type="text" maxlength="20" required aria-describedby="erro-periodoIngresso"><small>Ex.: 2026.1</small>
+<small id="erro-periodoIngresso"></small></div>
+<div><label for="dataNascimentoIdade">Data de nascimento / idade *</label>
+<input id="dataNascimentoIdade" name="dataNascimentoIdade" type="text" maxlength="60" required aria-describedby="erro-dataNascimentoIdade"><small>Ex.: 15/04/2005 (21 anos), conforme o cadastro institucional.</small>
+<small id="erro-dataNascimentoIdade"></small></div></div></fieldset><fieldset><legend>Contato do estudante</legend><div><div><label for="telefoneEstudante">Telefone do estudante</label>
+<input id="telefoneEstudante" name="telefoneEstudante" type="tel" maxlength="30"  aria-describedby="erro-telefoneEstudante">
+<small id="erro-telefoneEstudante"></small></div>
+<div><label for="emailEstudante">E-mail do estudante</label>
+<input id="emailEstudante" name="emailEstudante" type="email" maxlength="150"  aria-describedby="erro-emailEstudante">
+<small id="erro-emailEstudante"></small></div></div></fieldset><fieldset><legend>Responsável <span>(opcional)</span></legend><div><div><label for="nomeResponsavel">Nome do responsável</label>
+<input id="nomeResponsavel" name="nomeResponsavel" type="text" maxlength="150"  aria-describedby="erro-nomeResponsavel">
+<small id="erro-nomeResponsavel"></small></div>
+<div><label for="grauParentesco">Grau de parentesco</label>
+<input id="grauParentesco" name="grauParentesco" type="text" maxlength="60"  aria-describedby="erro-grauParentesco">
+<small id="erro-grauParentesco"></small></div>
+<div><label for="telefoneResponsavel">Telefone do responsável</label>
+<input id="telefoneResponsavel" name="telefoneResponsavel" type="tel" maxlength="30"  aria-describedby="erro-telefoneResponsavel">
+<small id="erro-telefoneResponsavel"></small></div>
+<div><label for="emailResponsavel">E-mail do responsável</label>
+<input id="emailResponsavel" name="emailResponsavel" type="email" maxlength="150"  aria-describedby="erro-emailResponsavel">
+<small id="erro-emailResponsavel"></small></div></div></fieldset><div><button id="salvar" type="submit" disabled>Registrar estudante</button></div></form>
+</main></body></html>
