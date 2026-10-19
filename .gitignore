@@ -63,3 +63,14 @@ pnpm-debug.log*
 # Docker local overrides and generated data
 docker-compose.override.yml
 docker-data/
+
+# Only the IntelliJ configuration files adjusted for this project
+!/.idea/
+/.idea/*
+!/.idea/compiler.xml
+!/.idea/misc.xml
+!/.idea/modules.xml
+!/.idea/runConfigurations/
+/.idea/runConfigurations/*
+!/.idea/runConfigurations/BackendApplication.xml
+!/apps/backend/backend.iml

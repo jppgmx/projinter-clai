@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='utf-8'?>
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="BackendApplication" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="br.edu.ifpb.clai.backend.BackendApplication" />
+    <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/apps/backend" />
+    <option name="ALTERNATIVE_JRE_PATH" value="temurin-21" />
+    <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+    <module name="backend" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+    <option name="VM_PARAMETERS" value="-Dspring.config.additional-location=file:$PROJECT_DIR$/apps/backend/src/main/resources/" />
+  </configuration>
+</component>
