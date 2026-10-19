@@ -86,6 +86,9 @@
                     <include>detalhes-estudante.js</include>
                     <include>abertura-estudo-caso.html</include>
                     <include>abertura-estudo-caso.js</include>
+                    <include>editar-estudo-caso.html</include>
+                    <include>editar-estudo-caso.js</include>
+                    <include>listar-estudos-caso.js</include>
                 </includes>
             </resource>
         </resources>

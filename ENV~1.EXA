@@ -1,5 +1,0 @@
-# Modelos por ambiente (não coloque credenciais reais neste arquivo):
-# .env.dev.example  -> copie para .env.dev
-# .env.prod.example -> copie para .env.prod
-# .env.test.example -> copie para .env.test
-# Use --env-file ao executar o Compose do ambiente escolhido.

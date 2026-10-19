@@ -172,3 +172,6 @@ ALTER TABLE estudo_de_caso
     ADD COLUMN IF NOT EXISTS data_arquivamento TIMESTAMP;
 
 CREATE INDEX IF NOT EXISTS idx_estudo_caso_arquivado ON estudo_de_caso (arquivado);
+
+-- Somente fixture de testes: permite verificar o bloqueio da T11 quando outra US já trancou o estudo.
+ALTER TABLE estudo_de_caso ADD COLUMN IF NOT EXISTS trancado BOOLEAN NOT NULL DEFAULT FALSE;
