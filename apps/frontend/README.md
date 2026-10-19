@@ -1,16 +1,27 @@
-# React + Vite
+# CLAI — Front end
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React + Vite + TypeScript + Tailwind CSS. API simulada com MSW (o back end Spring é separado e não será alterado).
 
-Currently, two official plugins are available:
+## Rodar
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+```bash
+npm install
+cp .env.example .env
+npm run dev
+```
 
-## React Compiler
+Login de teste (mock): qualquer usuário + senha `clai123`.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Variáveis (.env)
 
-## Expanding the ESLint configuration
+- `VITE_API_URL`: base da API (`/api` em dev, passa pelo proxy do Vite).
+- `VITE_API_PROXY_TARGET`: destino do proxy (Spring).
+- `VITE_USE_MOCKS`: `true` liga o MSW; `false` usa a API real.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## shadcn/ui
+
+O alias `@` já está configurado. Para adicionar o shadcn: `npx shadcn@latest init`.
+
+## Pendências [ABERTO]
+
+Autenticação, formato de erro, permissões por perfil, subitens do menu "Planos e Estudos de caso", rotas do aluno/atendimento, telas sem mockup.
