@@ -32,3 +32,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# IntelliJ module configuration adjusted for this project
+!backend.iml

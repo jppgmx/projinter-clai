@@ -71,10 +71,10 @@
 
     <build>
         <resources>
-            <resource><directory>src/main/resources</directory></resource>
             <resource><directory>../frontend/html</directory><targetPath>static</targetPath></resource>
             <resource><directory>../frontend/js</directory><targetPath>static/js</targetPath><includes><include>*.js</include></includes></resource>
             <resource><directory>../frontend/css</directory><targetPath>static/css</targetPath></resource>
+            <resource><directory>src/main/resources</directory></resource>
             <resource><directory>../frontend/dist</directory><targetPath>static</targetPath></resource>
         </resources>
         <plugins>

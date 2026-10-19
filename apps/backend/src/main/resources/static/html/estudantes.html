@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Consultar estudantes | CLAI</title>
+
+
+  <script type="module" crossorigin src="/assets/estudantes-D4a2IzHy.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill-P2Xu9kJm.js">
+  <link rel="modulepreload" crossorigin href="/assets/page-layout-DT-BfgoC.js">
+  <link rel="stylesheet" crossorigin href="/assets/page-layout-B-yH3Ezz.css">
+</head>
+<body data-ui-page="estudantes">
+<main>
+    <h1>Consultar estudantes</h1>
+    <form id="consulta" role="search">
+        <label for="busca">Nome ou matrícula</label>
+        <input id="busca" name="busca" type="search" maxlength="150">
+        <button type="submit">Buscar</button>
+    </form>
+    <p id="mensagem" role="status" aria-live="polite">Carregando estudantes…</p>
+    <table id="resultado" hidden>
+        <caption>Estudantes encontrados</caption>
+        <thead>
+        <tr>
+            <th scope="col">Matrícula</th>
+            <th scope="col">Nome</th>
+            <th scope="col">Curso</th>
+            <th scope="col">Turma</th>
+            <th scope="col">Período de ingresso</th>
+            <th scope="col">Consulta</th>
+        </tr>
+        </thead>
+        <tbody id="estudantes"></tbody>
+    </table>
+    <noscript>Ative o JavaScript para consultar os estudantes.</noscript>
+</main>
+</body>
+</html>
