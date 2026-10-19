@@ -26,7 +26,9 @@ A resposta de criação do estudante mantém o contrato existente. As consultas 
 
 ## Persistência e limites do escopo
 
-O PostgreSQL existente do Supabase continua sendo a base da aplicação. As entidades mapeiam `estudante` e `curso` conforme o SQL fornecido. O histórico usa uma projeção de leitura de `estudo_de_caso`; não há entidade de escrita nem endpoints para modificar estudos.
+O PostgreSQL existente do Supabase continua sendo a base da aplicação. As entidades mapeiam `estudante` e `curso` conforme o SQL fornecido. O histórico mantém uma projeção de leitura de `estudo_de_caso`. A US05 acrescenta uma entidade `EstudoCaso` limitada aos campos da abertura e um mapeamento de leitura de `Profissional` para selecionar o responsável existente. A gravação inicial usa `persist` dentro de uma transação; não há atualização ou exclusão de estudos, estudantes ou profissionais nessa operação.
+
+Os campos clínicos/documentais que são `NOT NULL` no schema são solicitados explicitamente na abertura. Assim como no projeto de referência, a origem `Outro` exige descrição e respostas `Sim` exigem detalhes. Campos posteriores de acompanhamento e assinaturas continuam sem preenchimento nesta US. A situação inicial `EM_ANDAMENTO` e sua descrição seguem a referência e pertencem somente à resposta de criação: não representam uma coluna nova nem implementam as mudanças de situação de outras histórias. O advice de abertura é restrito ao seu controller; os handlers e contratos das outras US foram preservados. O controller da referência reúne várias US, mas somente a parte de criação foi adaptada.
 
 O Hibernate apenas valida o schema e a inicialização SQL da aplicação fica desativada. Não são criados bancos, tabelas, cursos, migrações ou cópias dos registros existentes. As credenciais particulares ficam fora do Git e não são copiadas para a imagem de produção.
 

@@ -24,6 +24,10 @@ class ConsultaEstudanteTests extends PostgresIntegrationSupport {
     @BeforeEach
     void preparar() {
         jdbc.update("DELETE FROM estudo_de_caso");
+        jdbc.update("DELETE FROM profissional");
+        jdbc.update("DELETE FROM setor");
+        jdbc.update("INSERT INTO setor (id_setor, sigla_nome) VALUES (1, 'CLAI')");
+        jdbc.update("INSERT INTO profissional (id_profissional, fk_id_setor, nome_profissional, papel_cargo) VALUES (1, 1, 'Responsável teste', 'Docente')");
         jdbc.update("DELETE FROM estudante");
         jdbc.update("DELETE FROM curso");
         jdbc.update("INSERT INTO curso (id_curso, nome_curso) VALUES (1, 'Informática')");
@@ -117,8 +121,11 @@ class ConsultaEstudanteTests extends PostgresIntegrationSupport {
         jdbc.update("""
                 INSERT INTO estudo_de_caso (id_estudo_caso, fk_matricula_estudante, periodo_letivo,
                 datas_atendimento_anamnese, origem_encaminhamento, motivo_principal,
-                demanda_estudante, data_fechamento, arquivado)
-                VALUES (?, ?, '2026.1', '01/10/2026', 'CLAI', 'Acompanhamento', 'Apoio', DATE '2026-10-01', ?)
+                demanda_estudante, data_fechamento, arquivado, fk_profissional_responsavel,
+                deficiencia_necessidade_informada, docs_comprobatorios_flag_quais,
+                condicao_associada_flag_quais, medicacao_continua_flag_quais)
+                VALUES (?, ?, '2026.1', '01/10/2026', 'CLAI', 'Acompanhamento', 'Apoio', DATE '2026-10-01', ?,
+                1, 'Apoio pedagógico', 'Não informado', 'Não informado', 'Não informado')
                 """, id, matricula, arquivado);
     }
 }
