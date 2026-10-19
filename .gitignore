@@ -7,6 +7,7 @@ Desktop.ini
 .env
 .env.*
 !.env.example
+!.env.*.example
 # Local database credentials (including Supabase); examples remain versioned
 application-local.properties
 

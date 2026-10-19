@@ -2,6 +2,7 @@ package br.edu.ifpb.clai.backend;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
@@ -17,10 +18,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+@EnabledIfEnvironmentVariable(named = "CLAI_TEST_DATABASE_URL", matches = "jdbc:postgresql:.*")
 @ActiveProfiles("test")
 @SpringBootTest
 @AutoConfigureMockMvc
-class RegistroEstudanteTests {
+class RegistroEstudanteTests extends PostgresIntegrationSupport {
     @Autowired MockMvc mvc;
     @Autowired JdbcTemplate jdbc;
 
@@ -45,11 +47,11 @@ class RegistroEstudanteTests {
                 .andExpect(jsonPath("$.curso.idCurso").value(1))
                 .andExpect(jsonPath("$.curso.nomeCurso").value("Informática"));
         assertThat(jdbc.queryForMap("SELECT * FROM estudante WHERE matricula = '202610001'"))
-                .containsEntry("NOME_ESTUDANTE", "Ana Silva")
-                .containsEntry("TURMA", "A")
-                .containsEntry("FK_ID_CURSO", 1)
-                .containsEntry("DATA_NASCIMENTO_IDADE", "15/04/2005 (21 anos)")
-                .containsEntry("EMAIL_ESTUDANTE", null);
+                .containsEntry("nome_estudante", "Ana Silva")
+                .containsEntry("turma", "A")
+                .containsEntry("fk_id_curso", 1)
+                .containsEntry("data_nascimento_idade", "15/04/2005 (21 anos)")
+                .containsEntry("email_estudante", null);
     }
 
     @Test
@@ -62,12 +64,12 @@ class RegistroEstudanteTests {
         mvc.perform(post("/api/estudantes").contentType(MediaType.APPLICATION_JSON).content(dados))
                 .andExpect(status().isCreated());
         assertThat(jdbc.queryForMap("SELECT * FROM estudante"))
-                .containsEntry("EMAIL_ESTUDANTE", "ana@example.org")
-                .containsEntry("TELEFONE_ESTUDANTE", "(83) 99999-1111")
-                .containsEntry("NOME_RESPONSAVEL", "Maria Silva")
-                .containsEntry("GRAU_PARENTESCO", "Mãe")
-                .containsEntry("TELEFONE_RESPONSAVEL", "(83) 99999-2222")
-                .containsEntry("EMAIL_RESPONSAVEL", "maria@example.org");
+                .containsEntry("email_estudante", "ana@example.org")
+                .containsEntry("telefone_estudante", "(83) 99999-1111")
+                .containsEntry("nome_responsavel", "Maria Silva")
+                .containsEntry("grau_parentesco", "Mãe")
+                .containsEntry("telefone_responsavel", "(83) 99999-2222")
+                .containsEntry("email_responsavel", "maria@example.org");
     }
 
     @Test
