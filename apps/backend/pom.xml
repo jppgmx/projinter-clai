@@ -84,6 +84,8 @@
                     <include>estudantes.js</include>
                     <include>detalhes-estudante.html</include>
                     <include>detalhes-estudante.js</include>
+                    <include>abertura-estudo-caso.html</include>
+                    <include>abertura-estudo-caso.js</include>
                 </includes>
             </resource>
         </resources>

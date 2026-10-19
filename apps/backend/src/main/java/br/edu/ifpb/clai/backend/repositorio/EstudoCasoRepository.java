@@ -1,6 +1,8 @@
 package br.edu.ifpb.clai.backend.repositorio;
 
 import br.edu.ifpb.clai.backend.dto.HistoricoEstudoCaso;
+import br.edu.ifpb.clai.backend.entidade.EstudoCaso;
+import jakarta.persistence.EntityManager;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
@@ -9,9 +11,16 @@ import java.util.List;
 @Repository
 public class EstudoCasoRepository {
     private final JdbcTemplate jdbc;
+    private final EntityManager entityManager;
 
-    public EstudoCasoRepository(JdbcTemplate jdbc) {
+    public EstudoCasoRepository(JdbcTemplate jdbc, EntityManager entityManager) {
         this.jdbc = jdbc;
+        this.entityManager = entityManager;
+    }
+
+    public void cadastrar(EstudoCaso estudo) {
+        entityManager.persist(estudo);
+        entityManager.flush();
     }
 
     public List<HistoricoEstudoCaso> consultarHistorico(String matricula) {
