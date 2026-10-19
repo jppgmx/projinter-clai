@@ -1,1 +1,8 @@
-@import "tailwindcss";
+@import 'tailwindcss';
+
+@layer base {
+  /* Foco visível para navegação por teclado (requisito de acessibilidade) */
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-indigo-700;
+  }
+}

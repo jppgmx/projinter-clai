@@ -1,16 +1,14 @@
-# React + Vite
+# CLAI — Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React 19, TypeScript, Vite e Tailwind CSS, com a estilização existente preservada.
 
-Currently, two official plugins are available:
+```powershell
+npm install
+npm run dev
+```
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Acesso: http://localhost:4040/. O backend deve ser iniciado separadamente com Java 21 na porta 8080. Não há login nem API simulada. O painel usa GET /api/estudantes e GET /api/estudos-caso; falhas de conexão são exibidas sem números fictícios.
 
-## React Compiler
+O menu contém apenas consulta/cadastro de estudantes e abertura/consulta/atualização de estudos de caso. Os formulários continuam nas páginas HTML existentes, acessadas por navegação normal, sem duplicar as regras em React. As rotas /alunos e /planos-estudos/estudos redirecionam para essas páginas; as demais telas provisórias foram removidas.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+As tarefas de arquivamento/trancamento implementadas na outra pasta T11 não fazem parte do backend desta cópia. Agenda, planos de ação, avaliações, apoiadores, administração e autenticação não são apresentados como funcionalidades disponíveis.

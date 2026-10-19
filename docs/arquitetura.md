@@ -22,7 +22,7 @@ A resposta de criação do estudante mantém o contrato existente. As consultas 
 - Organização por funcionalidade: válida, mas foi substituída pela separação por responsabilidade solicitada pela equipe. Manter os dois padrões simultaneamente aumentaria a dificuldade de localização das classes.
 - Hexagonal/Clean Architecture: trariam portas, adaptadores e mapeamentos adicionais. Não foram adotadas porque ainda não há múltiplos canais de entrada ou implementações alternativas que justifiquem esse custo.
 - MVC com templates: não foi escolhido porque as páginas atuais são HTML/JavaScript que consomem a API; não são renderizadas por Thymeleaf/JTE.
-- Frontend com framework e serviço próprio: não foi introduzido para preservar o HTML sem CSS e o trabalho do integrante responsável pela interface. Os arquivos ficam em `apps/frontend` e são empacotados pelo Maven no JAR.
+- Frontend sem framework (HTML/JavaScript puro): foi a escolha inicial, para preservar as páginas já entregues. Deixou de ser a única abordagem com a adoção do React (ver a seção "Frontend React").
 
 ## Persistência e limites do escopo
 
@@ -46,7 +46,7 @@ A escolha de Supabase externo foi mantida por instrução expressa do responsáv
 
 ## Ambientes
 
-`application.properties` reúne o que é comum. `dev` importa a configuração local privada e usa a porta direta 4040 por padrão. `prod` recebe a conexão por ambiente, sem importar configuração local. Cada Compose define seu perfil e usa seu arquivo privado `.env.dev` ou `.env.prod`.
+`application.properties` reúne o que é comum. `dev` importa a configuração local privada e usa a porta 8080 por padrão; o frontend Vite fica na 4040 e encaminha `/api` para o backend. `prod` recebe a conexão por ambiente, sem importar configuração local. Cada Compose define seu perfil e usa seu arquivo privado `.env.dev` ou `.env.prod`.
 
 Não há banco embarcado. Os testes de integração são opcionais, exigem configuração explícita de um PostgreSQL de teste já existente e isolam suas tabelas em um schema próprio. A conexão da aplicação nunca é adotada automaticamente pelos testes.
 
@@ -61,3 +61,18 @@ Não há banco embarcado. Os testes de integração são opcionais, exigem confi
 A consulta geral segue a cadeia controller → serviço com transação de leitura → repositório JDBC. Um DTO de resumo retorna apenas identificador, matrícula, nome do estudante, período e situação, sem carregar os 57 campos clínicos de cada estudo. O parâmetro opcional `matricula` usa igualdade parametrizada; ausente ou vazio retorna todos os registros, por identificador decrescente. O valor é mantido como texto para preservar zeros à esquerda. A listagem não possui paginação nesta entrega.
 
 A mesma página de edição contém a lista inicial e o filtro, em HTML/JavaScript sem CSS. Os links usam a carga existente por identificador; situações que bloqueiam edição continuam somente para leitura. Arquivamento e trancamento são consultados pelas flags opcionais existentes, sem criação de colunas ou transições de estado. Nenhuma configuração de banco, cadastro de estudantes, abertura de estudo ou regra de atualização foi alterada para acrescentar a consulta.
+
+## Frontend React
+
+O frontend passou a ser uma aplicação desacoplada em `apps/frontend`, com React 19, TypeScript, Vite e Tailwind CSS (task 22). Ela consome a API do backend por `/api`; em desenvolvimento, o Vite (porta 4040) encaminha essas requisições ao Spring Boot (porta 8080).
+
+Decisões desta etapa:
+
+- A migração é incremental: o painel inicial e o layout base (menu lateral, rotas) são React. Os formulários de cadastro, consulta, abertura e edição continuam nas páginas HTML/JavaScript existentes, acessadas por navegação normal, para não duplicar regras de negócio antes de migrá-las.
+- As páginas HTML antigas também são geradas pelo build do Vite, mantendo seus caminhos `.html`.
+- O painel mostra apenas dados reais de `/api/estudantes` e `/api/estudos-caso`, com estados de erro e de lista vazia. Não há login, autenticação nem dados simulados, pois o backend ainda não implementa autenticação.
+- Alternativas descartadas: manter somente HTML/JavaScript (dificulta reuso de layout e componentes) e migrar todas as telas de uma vez (maior risco de regressão nas funcionalidades já validadas).
+
+Pendência: o empacotamento de produção (`pom.xml` e `Dockerfile`) ainda copia a pasta `frontend` inteira; deve passar a usar o resultado de `npm run build` (`dist/`).
+
+Instruções de execução local estão no `README.md`.

@@ -89,6 +89,8 @@
                     <include>editar-estudo-caso.html</include>
                     <include>editar-estudo-caso.js</include>
                     <include>listar-estudos-caso.js</include>
+                    <include>page-styles.css</include>
+                    <include>page-layout.js</include>
                 </includes>
             </resource>
         </resources>
