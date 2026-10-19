@@ -19,7 +19,7 @@ public record EstudoCasoEdicao(Integer idEstudoCaso, String matriculaEstudante, 
         String motivo = arquivado ? "Estudo de caso arquivado não pode ser alterado."
                 : trancado ? "Estudo de caso trancado não pode ser alterado."
                 : dataFechamento != null ? "Estudo de caso finalizado não pode ser alterado." : null;
-        String status = dataFechamento != null ? "FINALIZADO" : trancado ? "TRANCADO" : "EM_ANDAMENTO";
+        String status = arquivado ? "ARQUIVADO" : trancado ? "TRANCADO" : dataFechamento != null ? "FINALIZADO" : "EM_ANDAMENTO";
         return new EstudoCasoEdicao(id, matricula, nome, campos, profissionais, arquivado, trancado,
                 dataFechamento, status, motivo == null, motivo);
     }

@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Arquivamento e trancamento | CLAI</title>
+    <script src="/js/situacao-estudo-caso.js" type="module" defer></script>
+    <script src="/js/listar-estudos-caso.js" type="module" defer></script>
+    
+    
+<link rel="stylesheet" href="/css/page-styles.css">
+<script type="module" src="/js/page-layout.js"></script>
+</head>
+<body data-ui-page="situacao">
+<main>
+    <p><a href="editar-estudo-caso.html">Atualizar estudos de caso</a></p>
+    <h1>Arquivamento e trancamento de estudo de caso</h1>
+    <section aria-labelledby="titulo-listagem">
+        <h2 id="titulo-listagem">Estudos de caso existentes</h2>
+        <form id="filtro-estudos">
+            <label for="matricula-filtro">Matrícula completa do estudante</label>
+            <input id="matricula-filtro" type="text" name="matricula">
+            <button type="submit">Filtrar por matrícula</button>
+            <button id="todos-estudos" type="button">Mostrar todos</button>
+        </form>
+        <p id="mensagem-listagem" role="status" aria-live="polite"></p>
+        <table id="lista-estudos" data-selecao="situacao" hidden>
+            <caption>Estudos de caso cadastrados</caption>
+            <thead><tr><th scope="col">Número do estudo</th><th scope="col">Matrícula</th>
+                <th scope="col">Estudante</th><th scope="col">Período letivo</th>
+                <th scope="col">Situação</th><th scope="col">Ação</th></tr></thead>
+            <tbody id="linhas-estudos"></tbody>
+        </table>
+    </section>
+    <h2>Estudo selecionado</h2>
+    <p>Use a matrícula no filtro acima. O número do estudo é o identificador exibido na primeira coluna da lista.</p>
+    <form id="consulta-situacao">
+        <label for="id-estudo">Número do estudo de caso</label>
+        <input id="id-estudo" type="number" min="1" max="2147483647" step="1" required>
+        <button id="carregar" type="submit">Carregar situação</button>
+    </form>
+    <p id="mensagem" role="status" aria-live="polite" tabindex="-1">Selecione um estudo na lista ou informe seu número.</p>
+    <section id="dados" hidden aria-labelledby="titulo-estudo">
+        <h2 id="titulo-estudo"></h2>
+        <p id="matricula"></p>
+        <dl>
+            <dt>Situação</dt><dd id="situacao"></dd>
+            <dt>Data de fechamento</dt><dd id="data-fechamento"></dd>
+            <dt>Data do arquivamento</dt><dd id="data-arquivamento"></dd>
+            <dt>Motivo do arquivamento</dt><dd id="motivo-salvo"></dd>
+            <dt>Data do trancamento</dt><dd id="data-trancamento"></dd>
+            <dt>Justificativa do trancamento</dt><dd id="justificativa-salva"></dd>
+        </dl>
+        <p><a id="visualizar" href="editar-estudo-caso.html">Atualizar estudo de caso</a></p>
+        <p id="orientacao-edicao"></p>
+        <section aria-labelledby="titulo-arquivar">
+            <h2 id="titulo-arquivar">Arquivar estudo de caso</h2>
+            <p>O arquivamento preserva os dados e impede a edição do estudo.</p>
+            <form id="arquivamento">
+                <fieldset id="campos-arquivar">
+                    <legend>Motivo obrigatório</legend>
+                    <label for="motivo">Motivo do arquivamento</label><br>
+                    <textarea id="motivo" name="motivo" rows="4" required></textarea><br>
+                    <button type="submit">Arquivar estudo</button>
+                </fieldset>
+            </form>
+            <p id="bloqueio-arquivar"></p>
+            <form id="desarquivamento">
+                <p>Desarquivar remove a marcação, a data e o motivo do arquivamento atual. Trancamento e fechamento são preservados.</p>
+                <button id="desarquivar" type="submit" disabled>Desarquivar estudo</button>
+            </form>
+        </section>
+        <section aria-labelledby="titulo-trancar">
+            <h2 id="titulo-trancar">Trancar estudo de caso</h2>
+            <p>O trancamento preserva os dados e impede a edição. Estudos arquivados ou finalizados não podem ser trancados.</p>
+            <form id="trancamento">
+                <fieldset id="campos-trancar">
+                    <legend>Justificativa obrigatória</legend>
+                    <label for="justificativa">Justificativa do trancamento</label><br>
+                    <textarea id="justificativa" name="justificativa" rows="4" required></textarea><br>
+                    <button type="submit">Trancar estudo</button>
+                </fieldset>
+            </form>
+            <p id="bloqueio-trancar"></p>
+        </section>
+    </section>
+</main>
+</body>
+</html>

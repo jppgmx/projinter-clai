@@ -22,7 +22,7 @@ A resposta de criação do estudante mantém o contrato existente. As consultas 
 - Organização por funcionalidade: válida, mas foi substituída pela separação por responsabilidade solicitada pela equipe. Manter os dois padrões simultaneamente aumentaria a dificuldade de localização das classes.
 - Hexagonal/Clean Architecture: trariam portas, adaptadores e mapeamentos adicionais. Não foram adotadas porque ainda não há múltiplos canais de entrada ou implementações alternativas que justifiquem esse custo.
 - MVC com templates: não foi escolhido porque as páginas atuais são HTML/JavaScript que consomem a API; não são renderizadas por Thymeleaf/JTE.
-- Frontend sem framework (HTML/JavaScript puro): foi a escolha inicial, para preservar as páginas já entregues. Deixou de ser a única abordagem com a adoção do React (ver a seção "Frontend React").
+- Frontend com framework e serviço próprio: não foi introduzido para preservar o HTML sem CSS e o trabalho do integrante responsável pela interface. Os arquivos ficam em `apps/frontend` e são empacotados pelo Maven no JAR.
 
 ## Persistência e limites do escopo
 
@@ -46,7 +46,7 @@ A escolha de Supabase externo foi mantida por instrução expressa do responsáv
 
 ## Ambientes
 
-`application.properties` reúne o que é comum. `dev` importa a configuração local privada e usa a porta 8080 por padrão; o frontend Vite fica na 4040 e encaminha `/api` para o backend. `prod` recebe a conexão por ambiente, sem importar configuração local. Cada Compose define seu perfil e usa seu arquivo privado `.env.dev` ou `.env.prod`.
+`application.properties` reúne o que é comum. `dev` importa a configuração local privada e usa a porta direta 4040 por padrão. `prod` recebe a conexão por ambiente, sem importar configuração local. Cada Compose define seu perfil e usa seu arquivo privado `.env.dev` ou `.env.prod`.
 
 Não há banco embarcado. Os testes de integração são opcionais, exigem configuração explícita de um PostgreSQL de teste já existente e isolam suas tabelas em um schema próprio. A conexão da aplicação nunca é adotada automaticamente pelos testes.
 
@@ -62,17 +62,32 @@ A consulta geral segue a cadeia controller → serviço com transação de leitu
 
 A mesma página de edição contém a lista inicial e o filtro, em HTML/JavaScript sem CSS. Os links usam a carga existente por identificador; situações que bloqueiam edição continuam somente para leitura. Arquivamento e trancamento são consultados pelas flags opcionais existentes, sem criação de colunas ou transições de estado. Nenhuma configuração de banco, cadastro de estudantes, abertura de estudo ou regra de atualização foi alterada para acrescentar a consulta.
 
-## Frontend React
+## Portas locais do frontend React
 
-O frontend passou a ser uma aplicação desacoplada em `apps/frontend`, com React 19, TypeScript, Vite e Tailwind CSS (task 22). Ela consome a API do backend por `/api`; em desenvolvimento, o Vite (porta 4040) encaminha essas requisições ao Spring Boot (porta 8080).
+O frontend Vite está em `http://localhost:4040/`, com `strictPort` para não trocar silenciosamente de porta. O backend no perfil dev usa `http://localhost:8080`; o proxy `/api` aponta para ele. Reinicie os processos após a alteração e remova eventuais overrides antigos de SERVER_PORT na configuração de execução. Produção permanece com sua configuração anterior.
 
-Decisões desta etapa:
+Inicie o backend com Java 21 e o frontend com `npm run dev` dentro de `apps/frontend`. Para visualizar login e dashboard simulados, `.env` mantém `VITE_USE_MOCKS=true` como no exemplo. Credenciais Supabase continuam somente no backend privado. Nenhum SQL ou teste de integração foi executado nesta configuração.
 
-- A migração é incremental: o painel inicial e o layout base (menu lateral, rotas) são React. Os formulários de cadastro, consulta, abertura e edição continuam nas páginas HTML/JavaScript existentes, acessadas por navegação normal, para não duplicar regras de negócio antes de migrá-las.
-- As páginas HTML antigas também são geradas pelo build do Vite, mantendo seus caminhos `.html`.
-- O painel mostra apenas dados reais de `/api/estudantes` e `/api/estudos-caso`, com estados de erro e de lista vazia. Não há login, autenticação nem dados simulados, pois o backend ainda não implementa autenticação.
-- Alternativas descartadas: manter somente HTML/JavaScript (dificulta reuso de layout e componentes) e migrar todas as telas de uma vez (maior risco de regressão nas funcionalidades já validadas).
+## Frontend limitado às funcionalidades implementadas
 
-Pendência: o empacotamento de produção (`pom.xml` e `Dockerfile`) ainda copia a pasta `frontend` inteira; deve passar a usar o resultado de `npm run build` (`dist/`).
+A estilização React/Tailwind foi preservada. Foram retirados login/logout simulados, MSW e seus dados, pendências/alertas fictícios, agenda, planos, avaliações, apoiadores, demandas externas e administração. O dashboard consulta somente /api/estudantes e /api/estudos-caso e usa estados de erro/vazio em vez de dados de demonstração. Não existe autenticação implementada no backend; por isso a interface não apresenta proteção de acesso fictícia.
 
-Instruções de execução local estão no `README.md`.
+O menu oferece os fluxos reais já existentes em HTML: registro/consulta de estudantes, dados e histórico, abertura e atualização de estudos de caso. Esses arquivos, APIs e regras de backend permanecem intactos; não foi feita uma nova migração de formulários para React. Arquivar/trancar não foi trazido da pasta T11, pois esta cópia não tem esses endpoints. A aplicação React continua na porta 4040 com proxy para o backend 8080. Não foram executados SQL nem testes de integração.
+
+## Estilização dos fluxos existentes
+
+As páginas de cadastro, consulta, dados/histórico do estudante, abertura e atualização dos estudos usam agora o mesmo padrão visual do início: menu preto, fundo cinza, cartões brancos e ações em índigo. `page-styles.css` e `page-layout.js` compartilham estilos, menu e rodapé, sem bloco de usuário fictício ou funcionalidades não implementadas. O item Início retorna à aplicação React na raiz.
+
+Os arquivos, IDs, campos e scripts de negócio anteriores foram preservados. Não se duplicaram as regras de cadastro/edição em componentes novos. A inclusão dos scripts como módulos permite gerar também essas páginas no build Vite, mantendo todos os caminhos `.html`. Formulários se adaptam a uma coluna no celular, tabelas têm rolagem e o menu oferece controle por teclado. Nenhuma API ou credencial de banco foi alterada; não foram executados SQL nem testes de integração.
+
+## Atualização T05 a T13 e organização do frontend
+
+Consulte `docs/auditoria-t05-t13.md` para o resultado tarefa a tarefa. Foram acrescentadas T08 (editar estudante), T10 (laudos), T12 e T13, preservando os fluxos anteriores. O banco continua sendo o Supabase existente; nenhuma migração ou SQL remoto foi executado. As funcionalidades novas dependem das tabelas/colunas já descritas na referência.
+
+Frontend organizado em `apps/frontend/css`, `apps/frontend/html` e `apps/frontend/js`. O código React/TypeScript permanece com seus tipos e componentes em `js/src`; a stack não foi trocada. O `index.html` permanece na raiz do frontend conforme o Vite exige. As URLs antigas `.html` continuam acessíveis por compatibilidade, e as páginas também ficam em `/html/`. Nenhum segredo foi levado ao frontend.
+
+Execute o backend com Java 21 na porta 8080 e `npm run dev` em apps/frontend para acessar http://localhost:4040/. O menu agora inclui laudos/documentos e arquivamento/trancamento. Para editar estudante, use a consulta ou os detalhes; a matrícula é somente leitura. Na lista de estudos é possível abrir edição, documentos ou situação. Motivo e justificativa registrados aparecem ao selecionar o estudo na situação.
+
+Para empacotar: execute `npm run build` no frontend antes de compilar/empacotar o Maven no backend. O build gera as páginas e aliases e o Maven copia dist. Reinicie backend/Vite após a atualização e atualize o navegador com Ctrl+F5. Não inicie Docker automaticamente; a receita não foi executada nesta entrega.
+
+O Dockerfile foi ajustado para gerar o Vite antes do Maven, e o Nginx permite o tamanho de requisição multipart previsto. Não foram iniciados containers nem executado build Docker. As rotas React já existentes também encaminham para o index quando servidas pelo Spring; as rotas REST permanecem separadas. Os aliases HTML e os assets produzidos foram conferidos sem consultar o banco.

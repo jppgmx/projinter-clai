@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Abrir estudo de caso | CLAI</title>
+    <script src="/js/abertura-estudo-caso.js" type="module" defer></script>
+
+
+<link rel="stylesheet" href="/css/page-styles.css">
+<script type="module" src="/js/page-layout.js"></script>
+</head>
+<body data-ui-page="abertura">
+<main>
+    <p><a href="estudantes.html">Consultar estudantes</a></p>
+    <h1>Abrir estudo de caso</h1>
+    <p>Selecione um estudante e um profissional já cadastrados. Campos com * são obrigatórios.</p>
+    <p id="mensagem" role="status" aria-live="polite" tabindex="-1">Carregando opções…</p>
+    <button id="recarregar" type="button" hidden>Tentar carregar novamente</button>
+    <p id="resultado" hidden><a id="ver-historico">Ver o histórico do estudante</a></p>
+    <form id="abertura">
+        <fieldset>
+            <legend>Identificação do atendimento</legend>
+            <p><label for="matriculaEstudante">Estudante *</label><br>
+                <select id="matriculaEstudante" name="matriculaEstudante" required disabled aria-describedby="erro-matriculaEstudante">
+                    <option value="">Carregando estudantes…</option>
+                </select><small id="erro-matriculaEstudante"></small>
+            </p>
+            <p><label for="idProfissionalResponsavel">Profissional responsável *</label><br>
+                <select id="idProfissionalResponsavel" name="idProfissionalResponsavel" required disabled aria-describedby="erro-idProfissionalResponsavel">
+                    <option value="">Carregando profissionais…</option>
+                </select><small id="erro-idProfissionalResponsavel"></small>
+            </p>
+        <p>
+            <label for="periodoLetivo">Período letivo *</label><br>
+            <input type="text" id="periodoLetivo" name="periodoLetivo" aria-describedby="erro-periodoLetivo" required maxlength="20">
+            <small>2026.1</small>
+            <small id="erro-periodoLetivo"></small>
+        </p>
+        <p>
+            <label for="datasAtendimentoAnamnese">Datas de atendimento / anamnese *</label><br>
+            <textarea id="datasAtendimentoAnamnese" name="datasAtendimentoAnamnese" aria-describedby="erro-datasAtendimentoAnamnese" required rows="3"></textarea>
+            <small>Ex.: 18/10/2026</small>
+            <small id="erro-datasAtendimentoAnamnese"></small>
+        </p>
+        </fieldset>
+        <fieldset>
+            <legend>Encaminhamento e demandas iniciais</legend>
+            <p><label for="origemEncaminhamento">Origem do encaminhamento *</label><br>
+                <select id="origemEncaminhamento" name="origemEncaminhamento" required aria-describedby="erro-origemEncaminhamento">
+                    <option value="">Selecione a origem</option>
+                    <option value="CLAI">CLAI</option>
+                    <option value="COPED">COPED</option>
+                    <option value="CAEST">CAEST</option>
+                    <option value="Coordenação de Curso">Coordenação de Curso</option>
+                    <option value="Docente">Docente</option>
+                    <option value="Família">Família</option>
+                    <option value="Estudante">Estudante</option>
+                    <option value="Outro">Outro</option>
+                </select><small id="erro-origemEncaminhamento"></small>
+            </p>
+            <p id="outra-origem" hidden>
+                <label for="origemEncaminhamentoOutro">Descreva a outra origem *</label><br>
+                <input id="origemEncaminhamentoOutro" name="origemEncaminhamentoOutro" maxlength="150" disabled aria-describedby="erro-origemEncaminhamentoOutro">
+                <small id="erro-origemEncaminhamentoOutro"></small>
+            </p>
+        <p>
+            <label for="motivoPrincipal">Motivo principal do encaminhamento *</label><br>
+            <textarea id="motivoPrincipal" name="motivoPrincipal" aria-describedby="erro-motivoPrincipal" required rows="3"></textarea>
+            
+            <small id="erro-motivoPrincipal"></small>
+        </p>
+        <p>
+            <label for="demandaEstudante">Demanda do estudante</label><br>
+            <textarea id="demandaEstudante" name="demandaEstudante" aria-describedby="erro-demandaEstudante" rows="3"></textarea>
+            
+            <small id="erro-demandaEstudante"></small>
+        </p>
+        <p>
+            <label for="demandaFamiliaResponsavel">Demanda da família / responsável</label><br>
+            <textarea id="demandaFamiliaResponsavel" name="demandaFamiliaResponsavel" aria-describedby="erro-demandaFamiliaResponsavel" rows="3"></textarea>
+            
+            <small id="erro-demandaFamiliaResponsavel"></small>
+        </p>
+        <p>
+            <label for="demandaEquipeEscolar">Demanda da equipe escolar</label><br>
+            <textarea id="demandaEquipeEscolar" name="demandaEquipeEscolar" aria-describedby="erro-demandaEquipeEscolar" rows="3"></textarea>
+            
+            <small id="erro-demandaEquipeEscolar"></small>
+        </p>
+        </fieldset>
+        <fieldset>
+            <legend>Informações iniciais da necessidade específica</legend>
+            <p>Registre as informações conhecidas. Quando não houver informação, escreva “Não informado”.</p>
+        <p>
+            <label for="deficienciaNecessidadeInformada">Deficiência / necessidade informada *</label><br>
+            <textarea id="deficienciaNecessidadeInformada" name="deficienciaNecessidadeInformada" aria-describedby="erro-deficienciaNecessidadeInformada" required rows="3"></textarea>
+            
+            <small id="erro-deficienciaNecessidadeInformada"></small>
+        </p>
+        <p>
+            <label for="docsComprobatoriosFlagQuais">Documentos comprobatórios informados *</label><br>
+            <textarea id="docsComprobatoriosFlagQuais" name="docsComprobatoriosFlagQuais" aria-describedby="erro-docsComprobatoriosFlagQuais" required rows="3"></textarea>
+            <small>Ex.: Não informado; Não; ou Sim: descrição dos documentos</small>
+            <small id="erro-docsComprobatoriosFlagQuais"></small>
+        </p>
+        <p>
+            <label for="condicaoAssociadaFlagQuais">Condição associada informada *</label><br>
+            <textarea id="condicaoAssociadaFlagQuais" name="condicaoAssociadaFlagQuais" aria-describedby="erro-condicaoAssociadaFlagQuais" required rows="3"></textarea>
+            <small>Ex.: Não informado; Não; ou Sim: descrição</small>
+            <small id="erro-condicaoAssociadaFlagQuais"></small>
+        </p>
+        <p>
+            <label for="medicacaoContinuaFlagQuais">Medicação contínua informada *</label><br>
+            <textarea id="medicacaoContinuaFlagQuais" name="medicacaoContinuaFlagQuais" aria-describedby="erro-medicacaoContinuaFlagQuais" required rows="3"></textarea>
+            <small>Ex.: Não informado; Não; ou Sim: descrição</small>
+            <small id="erro-medicacaoContinuaFlagQuais"></small>
+        </p>
+        </fieldset>
+        <p><button id="abrir" type="submit" disabled>Abrir estudo de caso</button></p>
+    </form>
+    <noscript>Ative o JavaScript para abrir um estudo de caso.</noscript>
+</main>
+</body>
+</html>

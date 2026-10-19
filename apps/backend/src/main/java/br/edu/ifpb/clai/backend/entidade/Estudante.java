@@ -64,6 +64,20 @@ public class Estudante {
         this.curso = curso;
     }
 
+    public void atualizar(String turma, String nomeEstudante, String periodoIngresso, String dataNascimentoIdade, String telefoneEstudante, String emailEstudante, String nomeResponsavel, String grauParentesco, String telefoneResponsavel, String emailResponsavel, Curso curso) {
+        this.turma = turma;
+        this.nomeEstudante = nomeEstudante;
+        this.periodoIngresso = periodoIngresso;
+        this.dataNascimentoIdade = dataNascimentoIdade;
+        this.telefoneEstudante = telefoneEstudante;
+        this.emailEstudante = emailEstudante;
+        this.nomeResponsavel = nomeResponsavel;
+        this.grauParentesco = grauParentesco;
+        this.telefoneResponsavel = telefoneResponsavel;
+        this.emailResponsavel = emailResponsavel;
+        this.curso = curso;
+    }
+
     public String getMatricula() {
         return matricula;
     }
