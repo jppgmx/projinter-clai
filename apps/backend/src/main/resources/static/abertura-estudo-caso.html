@@ -6,10 +6,12 @@
     <title>Abrir estudo de caso | CLAI</title>
 
 
-  <script type="module" crossorigin src="/assets/abertura-estudo-caso-CysPlFqB.js"></script>
+  <script type="module" crossorigin src="/assets/abertura-estudo-caso-DW0TvoM-.js"></script>
   <link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill-P2Xu9kJm.js">
-  <link rel="modulepreload" crossorigin href="/assets/page-layout-DT-BfgoC.js">
-  <link rel="stylesheet" crossorigin href="/assets/page-layout-B-yH3Ezz.css">
+  <link rel="modulepreload" crossorigin href="/assets/campos-estudante-DmqVamaz.js">
+  <link rel="modulepreload" crossorigin href="/assets/campos-data-CRE5RU5e.js">
+  <link rel="modulepreload" crossorigin href="/assets/page-layout-DHdffhUw.js">
+  <link rel="stylesheet" crossorigin href="/assets/page-layout-CgWakXfP.css">
 </head>
 <body data-ui-page="abertura">
 <main>
@@ -22,10 +24,12 @@
     <form id="abertura">
         <fieldset>
             <legend>Identificação do atendimento</legend>
-            <p><label for="matriculaEstudante">Estudante *</label><br>
-                <select id="matriculaEstudante" name="matriculaEstudante" required disabled aria-describedby="erro-matriculaEstudante">
-                    <option value="">Carregando estudantes…</option>
-                </select><small id="erro-matriculaEstudante"></small>
+            <p><label for="buscaEstudante">Estudante *</label><br>
+                <input id="matriculaEstudante" name="matriculaEstudante" type="hidden">
+                <input id="buscaEstudante" type="search" required disabled autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="sugestoes-estudantes" aria-describedby="ajuda-busca erro-matriculaEstudante" placeholder="Digite pelo menos 3 caracteres">
+                <small id="ajuda-busca">Busque por nome ou matrícula e selecione um dos cinco resultados.</small>
+                <ul id="sugestoes-estudantes" role="listbox" aria-label="Estudantes encontrados" hidden></ul>
+                <small id="status-busca" role="status" aria-live="polite"></small><small id="erro-matriculaEstudante"></small>
             </p>
             <p><label for="idProfissionalResponsavel">Profissional responsável *</label><br>
                 <select id="idProfissionalResponsavel" name="idProfissionalResponsavel" required disabled aria-describedby="erro-idProfissionalResponsavel">
@@ -41,7 +45,7 @@
         <p>
             <label for="datasAtendimentoAnamnese">Datas de atendimento / anamnese *</label><br>
             <textarea id="datasAtendimentoAnamnese" name="datasAtendimentoAnamnese" aria-describedby="erro-datasAtendimentoAnamnese" required rows="3"></textarea>
-            <small>Ex.: 18/10/2026</small>
+            <small>Selecione uma data por atendimento; use Adicionar data para incluir outras.</small>
             <small id="erro-datasAtendimentoAnamnese"></small>
         </p>
         </fieldset>

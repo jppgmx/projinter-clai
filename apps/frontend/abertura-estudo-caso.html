@@ -4,9 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Abrir estudo de caso | CLAI</title>
-    <script src="abertura-estudo-caso.js" type="module" defer></script>
-<link rel="stylesheet" href="page-styles.css">
-<script type="module" src="page-layout.js"></script>
+    <script src="/js/abertura-estudo-caso.js" type="module" defer></script>
+
+
+<link rel="stylesheet" href="/css/page-styles.css">
+<script type="module" src="/js/page-layout.js"></script>
 </head>
 <body data-ui-page="abertura">
 <main>
@@ -19,10 +21,12 @@
     <form id="abertura">
         <fieldset>
             <legend>Identificação do atendimento</legend>
-            <p><label for="matriculaEstudante">Estudante *</label><br>
-                <select id="matriculaEstudante" name="matriculaEstudante" required disabled aria-describedby="erro-matriculaEstudante">
-                    <option value="">Carregando estudantes…</option>
-                </select><small id="erro-matriculaEstudante"></small>
+            <p><label for="buscaEstudante">Estudante *</label><br>
+                <input id="matriculaEstudante" name="matriculaEstudante" type="hidden">
+                <input id="buscaEstudante" type="search" required disabled autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="sugestoes-estudantes" aria-describedby="ajuda-busca erro-matriculaEstudante" placeholder="Digite pelo menos 3 caracteres">
+                <small id="ajuda-busca">Busque por nome ou matrícula e selecione um dos cinco resultados.</small>
+                <ul id="sugestoes-estudantes" role="listbox" aria-label="Estudantes encontrados" hidden></ul>
+                <small id="status-busca" role="status" aria-live="polite"></small><small id="erro-matriculaEstudante"></small>
             </p>
             <p><label for="idProfissionalResponsavel">Profissional responsável *</label><br>
                 <select id="idProfissionalResponsavel" name="idProfissionalResponsavel" required disabled aria-describedby="erro-idProfissionalResponsavel">
@@ -38,7 +42,7 @@
         <p>
             <label for="datasAtendimentoAnamnese">Datas de atendimento / anamnese *</label><br>
             <textarea id="datasAtendimentoAnamnese" name="datasAtendimentoAnamnese" aria-describedby="erro-datasAtendimentoAnamnese" required rows="3"></textarea>
-            <small>Ex.: 18/10/2026</small>
+            <small>Selecione uma data por atendimento; use Adicionar data para incluir outras.</small>
             <small id="erro-datasAtendimentoAnamnese"></small>
         </p>
         </fieldset>

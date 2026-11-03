@@ -1,6 +1,10 @@
-"use strict";
+import { configurarBuscaEstudante } from "./busca-estudante.js";
+import { configurarDatas } from "./campos-data.js";
 const form = document.querySelector("#abertura");
 const estudante = document.querySelector("#matriculaEstudante");
+const buscaEstudante = document.querySelector("#buscaEstudante");
+const busca = configurarBuscaEstudante(buscaEstudante, estudante);
+configurarDatas("datasAtendimentoAnamnese", { multiplo: true });
 const profissional = document.querySelector("#idProfissionalResponsavel");
 const origem = document.querySelector("#origemEncaminhamento");
 const outraOrigem = document.querySelector("#origemEncaminhamentoOutro");
@@ -24,32 +28,30 @@ async function consultar(url) {
 
 async function carregarOpcoes() {
     abrir.disabled = true;
-    estudante.disabled = true;
+    buscaEstudante.disabled = true;
     profissional.disabled = true;
     recarregar.hidden = true;
     mensagem.textContent = "Carregando opções…";
     try {
-        const [estudantes, profissionais] = await Promise.all([
-            consultar("/api/estudantes"), consultar("/api/estudos-caso/profissionais")
-        ]);
-        estudante.replaceChildren(new Option("Selecione um estudante", ""));
+        const profissionais = await consultar("/api/estudos-caso/profissionais");
         profissional.replaceChildren(new Option("Selecione o responsável", ""));
-        estudantes.forEach(item => estudante.add(new Option(`${item.nomeEstudante} (${item.matricula})`, item.matricula)));
         profissionais.forEach(item => profissional.add(new Option(`${item.nomeProfissional} — ${item.papelCargo}`, item.idProfissional)));
-        estudante.disabled = estudantes.length === 0;
+        buscaEstudante.disabled = false;
         profissional.disabled = profissionais.length === 0;
-        if (!estudantes.length || !profissionais.length) {
-            informar(!estudantes.length ? "Não há estudantes cadastrados para abrir o estudo."
-                : "Não há profissionais cadastrados. Solicite ao responsável o cadastro do profissional antes de abrir o estudo.");
+        if (!profissionais.length) {
+            informar("Não há profissionais cadastrados. Solicite ao responsável o cadastro do profissional antes de abrir o estudo.");
             recarregar.hidden = false;
             return;
         }
         abrir.disabled = false;
         const matricula = new URLSearchParams(location.search).get("matricula");
-        if (matricula && estudantes.some(item => item.matricula === matricula)) estudante.value = matricula;
         mensagem.textContent = "Preencha os dados da abertura.";
-        if (matricula && !estudantes.some(item => item.matricula === matricula)) {
-            informar("A matrícula indicada não foi encontrada. Selecione um estudante da lista.");
+        if (matricula) {
+            const resposta = await fetch(`/api/estudantes/${encodeURIComponent(matricula)}`, { cache: "no-store" });
+            if (resposta.ok) {
+                const item = await resposta.json();
+                if (!buscaEstudante.value.trim()) busca.selecionar(item);
+            } else informar("A matrícula indicada não foi encontrada. Busque e selecione um estudante.");
         }
     } catch {
         informar("Não foi possível carregar estudantes e profissionais. Verifique a conexão e tente novamente.");
@@ -70,6 +72,7 @@ origem.addEventListener("change", () => {
 
 form.addEventListener("input", event => {
     const campo = event.target;
+    if (campo === buscaEstudante) return;
     campo.removeAttribute("aria-invalid");
     campo.setCustomValidity("");
     const erro = document.getElementById(`erro-${campo.name}`);
@@ -83,6 +86,7 @@ form.addEventListener("input", event => {
 
 form.addEventListener("submit", async event => {
     event.preventDefault();
+    if (!estudante.value) buscaEstudante.setCustomValidity("Busque e selecione um estudante.");
     if (abrir.disabled || !form.reportValidity()) return;
     form.querySelectorAll('[id^="erro-"]').forEach(campo => { campo.textContent = ""; });
     form.querySelectorAll('[aria-invalid="true"]').forEach(campo => campo.removeAttribute("aria-invalid"));
@@ -101,7 +105,7 @@ form.addEventListener("submit", async event => {
         if (!response.ok) {
             let primeiro;
             Object.entries(corpo.campos || {}).forEach(([nome, texto]) => {
-                const campo = document.getElementById(nome);
+                const campo = nome === "matriculaEstudante" ? buscaEstudante : document.getElementById(nome);
                 const erro = document.getElementById(`erro-${nome}`);
                 if (campo && erro) {
                     campo.setAttribute("aria-invalid", "true");

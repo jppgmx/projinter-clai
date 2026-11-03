@@ -20,13 +20,13 @@
 <small id="erro-nomeEstudante"></small></div><div><label for="curso">Curso *</label>
 <select id="curso" name="curso" required aria-describedby="erro-curso" disabled><option value="">Carregando cursos…</option></select>
 <small id="erro-curso"></small><button type="button" id="recarregar" hidden>Tentar carregar cursos novamente</button></div><div><label for="turma">Turma *</label>
-<input id="turma" name="turma" type="text" maxlength="50" required aria-describedby="erro-turma">
+<select id="turma" name="turma" required aria-describedby="erro-turma"><option value="">Selecione uma turma</option><option>Banco de Dados II</option><option>Gerência de Projetos de Software</option><option>Laboratório de Engenharia de Software</option><option>Laboratório de Redes de Computadores</option></select>
 <small id="erro-turma"></small></div>
 <div><label for="periodoIngresso">Período de ingresso *</label>
 <input id="periodoIngresso" name="periodoIngresso" type="text" maxlength="20" required aria-describedby="erro-periodoIngresso"><small>Ex.: 2026.1</small>
 <small id="erro-periodoIngresso"></small></div>
-<div><label for="dataNascimentoIdade">Data de nascimento / idade *</label>
-<input id="dataNascimentoIdade" name="dataNascimentoIdade" type="text" maxlength="60" required aria-describedby="erro-dataNascimentoIdade"><small>Ex.: 15/04/2005 (21 anos), conforme o cadastro institucional.</small>
+<div><label for="dataNascimentoIdade">Data de nascimento *</label>
+<input id="dataNascimentoIdade" name="dataNascimentoIdade" type="date" required aria-describedby="erro-dataNascimentoIdade">
 <small id="erro-dataNascimentoIdade"></small></div></div></fieldset><fieldset><legend>Contato do estudante</legend><div><div><label for="telefoneEstudante">Telefone do estudante</label>
 <input id="telefoneEstudante" name="telefoneEstudante" type="tel" maxlength="30"  aria-describedby="erro-telefoneEstudante">
 <small id="erro-telefoneEstudante"></small></div>
@@ -36,7 +36,7 @@
 <input id="nomeResponsavel" name="nomeResponsavel" type="text" maxlength="150"  aria-describedby="erro-nomeResponsavel">
 <small id="erro-nomeResponsavel"></small></div>
 <div><label for="grauParentesco">Grau de parentesco</label>
-<input id="grauParentesco" name="grauParentesco" type="text" maxlength="60"  aria-describedby="erro-grauParentesco">
+<select id="grauParentesco" name="grauParentesco" aria-describedby="erro-grauParentesco"><option value="">Selecione o parentesco</option><option>Mãe</option><option>Pai</option><option>Madrasta</option><option>Padrasto</option><option>Avó</option><option>Avô</option><option>Irmã</option><option>Irmão</option><option>Tia</option><option>Tio</option><option>Responsável legal</option><option>Outro</option></select>
 <small id="erro-grauParentesco"></small></div>
 <div><label for="telefoneResponsavel">Telefone do responsável</label>
 <input id="telefoneResponsavel" name="telefoneResponsavel" type="tel" maxlength="30"  aria-describedby="erro-telefoneResponsavel">

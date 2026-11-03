@@ -1,4 +1,4 @@
-"use strict";
+import { configurarDatas } from "./campos-data.js";
 const camposTexto = ["periodoLetivo", "datasAtendimentoAnamnese", "origemEncaminhamento", "origemEncaminhamentoOutro", "motivoPrincipal", "demandaEstudante", "demandaFamiliaResponsavel", "demandaEquipeEscolar", "deficienciaNecessidadeInformada", "diagnosticos", "docsComprobatoriosFlagQuais", "dataProfissionalDocs", "condicaoAssociadaFlagQuais", "medicacaoContinuaFlagQuais", "encaminhamentosAnteriores", "servicosApoioAtuaisAnteriores", "historicoEscolar", "experienciasEscolaresPositivas", "experienciasNegativasBarreiras", "adaptacoesRecursosUtilizadosResultados", "objetivosConhecimentosConsolidados", "areasDisciplinasMaiorFacilidade", "areasDisciplinasMaiorDificuldade", "comunicacaoCompreensaoOrientacoes", "leituraEscritaLinguagem", "raciocinioLogicoMatematico", "atencaoMemoriaFuncoesExecutivas", "organizacaoPlanejamentoTarefas", "interacaoSocialParticipacaoSala", "aspectosSensoriaisRelevantes", "mobilidadeAcessoFisicoTecnologias", "autonomiaContextoFamiliar", "autonomiaContextoEscolar", "estrategiasFavorecemAprendizagem", "situacoesDificultamDesorganizamAprendizagem", "relacaoCursoExpectativas", "redeApoioFamiliarSocial", "conflitosFatoresPsicossociais", "observacoesFrequenciaRotinaPermanencia", "potencialidadesAcademicas", "interessesHabilidades", "formasPreferenciaisAprender", "recursosPessoaisTecnologicos", "sinteseAIdentificacaoNecessidades", "sinteseBAvancosObjetivosAlcancados", "sinteseCDificuldadesBarreirasEducacionais", "sinteseDPotencialidadesCondicoesFacilitadoras", "sinteseEPrincipaisDemandasIdentificadas", "checklistAcessibilidadeAmbiente", "checklistComunicacaoMateriais", "checklistMetodologia", "checklistAvaliacao", "checklistCurriculo", "checklistApoiosInstitucionais", "apoiosExternosEncaminhamentos", "assinaturaPsicopedagogo", "assinaturaCoordenadorClai"];
 const camposProfissionais = ["idProfissionalResponsavel", "idPsicopedagogoAssinatura", "idCoordenadorClaiAssinatura"];
 const camposSimNao = ["docsComprobatoriosFlagQuais", "condicaoAssociadaFlagQuais", "medicacaoContinuaFlagQuais"];
@@ -9,6 +9,12 @@ const form = document.querySelector("#edicao");
 const fieldset = document.querySelector("#campos-edicao");
 const salvar = document.querySelector("#salvar");
 const mensagem = document.querySelector("#mensagem");
+const datasAtendimento = configurarDatas("datasAtendimentoAnamnese", { multiplo: true });
+const datasDocumentos = configurarDatas("dataProfissionalDocs", { complemento: "Profissional e informações dos documentos" });
+function preencherDatas(campos) {
+    datasAtendimento.preencher(campos.datasAtendimentoAnamnese ?? "");
+    datasDocumentos.preencher(campos.dataProfissionalDocs ?? "");
+}
 let atual;
 let requisicao;
 let salvando = false;
@@ -50,6 +56,7 @@ function preencher(estudo, profissionais) {
         }
         select.value = id ?? "";
     });
+    preencherDatas(estudo.campos);
     atual = estudo;
     limparErros();
     configurarOrigem();
@@ -164,6 +171,7 @@ form.addEventListener("submit", async event => {
         }
         atual = body;
         camposTexto.forEach(chave => { document.getElementById(chave).value = body.campos[chave] ?? ""; });
+        preencherDatas(body.campos);
         camposProfissionais.forEach(chave => { document.getElementById(chave).value = body.profissionais[chave] ?? ""; });
         configurarOrigem();
         informar("Estudo de caso atualizado com sucesso.");

@@ -1,4 +1,4 @@
-"use strict";
+import { preencherEstudante, preservarNascimento } from "./campos-estudante.js";
 const form = document.getElementById("cadastro");
 const curso = document.getElementById("curso");
 const salvar = document.getElementById("salvar");
@@ -19,7 +19,7 @@ async function carregar() {
         const [cursos, estudante] = await Promise.all(respostas.map(r => r.json()));
         curso.replaceChildren(new Option("Selecione um curso", ""));
         cursos.forEach(item => curso.add(new Option(item.nomeCurso, item.idCurso)));
-        form.querySelectorAll("input[name]").forEach(campo => { campo.value = estudante[campo.name] ?? ""; });
+        preencherEstudante(form, estudante);
         curso.value = estudante.curso.idCurso;
         curso.disabled = false;
         document.getElementById("matricula").readOnly = true;
@@ -40,6 +40,7 @@ form.addEventListener("submit", async event => {
     if (enviando || recarga || salvar.disabled || !form.reportValidity()) return;
     const dados = Object.fromEntries(new FormData(form));
     Object.keys(dados).forEach(chave => { dados[chave] = dados[chave].trim() || null; });
+    preservarNascimento(form, dados);
     dados.matricula = matricula;
     dados.curso = { idCurso: Number(curso.value) };
     form.querySelectorAll('[id^="erro-"]').forEach(campo => { campo.textContent = ""; });
